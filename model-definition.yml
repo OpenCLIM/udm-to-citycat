@@ -1,0 +1,65 @@
+kind: Model
+api_version: v1beta1
+metadata:
+  display_name: UDM to City Cat (Data Preperation)
+  name: udmcc
+  publisher: Newcastle University
+  summary: >
+    This model takes the data produced by the urban development model and formats it for CityCat. 
+  source_code: https://github.com/OpenCLIM/udm_fabric_generator
+  description: >
+    The urban fabric generator produces geopackage files defining where new urban development will take place according to the projected
+    socio-economic pathways. Dependent on constraints and attractors, some pathways permit the building of new residental buildings in
+    existing green spaces. This model takes the existing greenspaces as of 2020 and removes the polygons where future development is to take
+    place. It then merges the new greenspaces with the modified existing greenspaces to be uploaded to the city cat model. The new buildings 
+    are also merged with existing buildings to be uploaded to the city cat model. 
+
+spec:
+  inputs:
+    parameters:
+      - name: TITLE
+        title: Title
+        type: string
+        description: The title given to the output dataset
+        default: Urban Fabric Output
+        required: true
+        
+    dataslots:
+      - name: Existing Buildings
+        description:
+          Existing buildings must be provided in a GPKG format as a single file. 
+        default:
+          - 279af83d-3690-4dee-9004-7d100be6ccc6
+        path: inputs/buildings/
+        required: true
+
+      - name: Existing Greenspaces
+        description:
+          Existing greenspaces must be provided in a GPKG format as a single file. 
+        default:
+          - 41a7f3d3-0cbf-44cb-89fc-de9ec63f0b37
+        path: inputs/buildings/
+        required: true
+
+      - name: Urban Development Raster
+        description:
+          Planned urban development must be provided in ASCII raster format, within a single file or as multiple tiles. Should be
+          taken from the UDM output file *_cell_dph.asc
+        default:
+          - e797e66e-f143-4b29-8efd-17158881a566
+        path: inputs/
+        required: false 
+        
+      - name: Urban Fabric 
+        description:
+          Geopackages created by the urban fabric generator model and stored in a zip file due to file size.
+        default: 
+          - 252e0f2b-55b1-4f8f-964b-63c4e0a7b98f
+        path: inputs/
+        required: false 
+        
+  outputs:
+    datasets:
+      - name: outputs/data/
+        type: folder
+        description: path to model outputs
