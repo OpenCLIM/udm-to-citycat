@@ -2,31 +2,25 @@ import os
 import shutil  # must be imported before GDAL
 import glob
 from glob import glob
-import pandas as pd
-import numpy as np
 import geopandas as gpd
 from zipfile import ZipFile
-import rasterio as rio
-import osgeo
-import fiona
-from osgeo import gdal
-from osgeo import osr
-from osgeo import ogr
-import xarray
 import rasterio
 from rasterio import features
-from shapely.geometry import shape
-import geopandas as gdp
-import shapely.validation
 from shapely.validation import make_valid
 from shapely.validation import explain_validity
 
 # Set up paths
-data_path = os.getenv('DATA_PATH', r"C:\Users\nob40\OneDrive - Newcastle University\023 - UFG Onwards\file_prep\data")
+data_path = os.getenv('DATA_PATH', '/data')
 inputs_path = os.path.join(data_path, 'inputs')
 outputs_path = os.path.join(data_path, 'outputs')
 if not os.path.exists(outputs_path):
     os.mkdir(outputs_path)
+
+
+buildings = glob(inputs_path + "/buildings/*.*", recursive = True)
+e_builds = gpd.read_file(buildings[0])
+greens = glob(inputs_path + "/green_areas/*.*", recursive = True)
+e_green = gpd.read_file(greens[0])
 
 # If the UDM model preceeds the CityCat model in the workflow, a zip file should appear in the inputs folder
 # Check if the zip file exists
@@ -57,10 +51,9 @@ if len(matches) ==1 :
 
 # Read in all of the relevent files from the inputs folder, including the outputs from the udm
 dph_raster = os.path.join(inputs_path,'out_cell_dph_clip.asc')
-u_builds = gdp.read_file(os.path.join(inputs_path,'buildings','buildings_udm.gpkg'))
-e_builds = gdp.read_file(os.path.join(inputs_path,'buildings','Newcastle_Buildings_Existing.gpkg'))
-u_green = gdp.read_file(os.path.join(inputs_path,'green_areas','greenspace_udm.gpkg'))
-e_green = gdp.read_file(os.path.join(inputs_path,'green_areas','Newcastle_GreenSpaces_Existing.gpkg'))
+buildings = glob(inputs_path + "/buildings/*.*", recursive = True)
+u_builds = gpd.read_file(os.path.join(inputs_path,'buildings','buildings_udm.gpkg'))
+u_green = gpd.read_file(os.path.join(inputs_path,'green_areas','greenspace_udm.gpkg'))
 
 # Define the projection for each of the geopackages to ensure all projections are the same
 u_builds.set_crs(epsg=27700, inplace=True)
@@ -80,7 +73,7 @@ results = ({'properties':{'cluster_id':int(v)},'geometry':s}
 
 geoms=list(results)
 # Turn the results into a geopanda dataframe
-gpd_polygonized_raster = gdp.GeoDataFrame.from_features(geoms)
+gpd_polygonized_raster =gpd.GeoDataFrame.from_features(geoms)
 gpd_polygonized_raster.set_crs(epsg=27700, inplace=True) 
 # Not needed but useful to output to file to check the results are as expected.
 # gpd_polygonized_raster.to_file(os.path.join(outputs_path,'dph_poly.gpkg'),driver='GPKG')
@@ -98,7 +91,7 @@ gpd_polygonized_raster['validity'] = gpd_polygonized_raster.apply(lambda row: ex
 gpd_polygonized_raster.set_crs(epsg=27700, inplace=True)
 # Not needed but useful to output to file to check the results are as expected / might come in useful for examining city expansion
 gpd_polygonized_raster.to_file(os.path.join(outputs_path,'dph_poly.gpkg'),driver='GPKG')
-shp= gdp.read_file(os.path.join(outputs_path,'dph_poly.gpkg'))
+shp= gpd.read_file(os.path.join(outputs_path,'dph_poly.gpkg'))
 
 # Look at the difference between the developed land and exisiting green spaces and output to file
 res_difference = gpd.overlay(e_green,shp, how='difference')
@@ -112,16 +105,16 @@ se_green = res_difference.to_file(os.path.join(outputs_path,'e_greenarea.shp'))
 
 # Need to read the shapefiles in so that they can be merged
 # For the city cat set up to run, all multi polygons must be made into polygons and reindexed
-u_builds = gdp.read_file(os.path.join(outputs_path,'u_buildings.shp'))
+u_builds = gpd.read_file(os.path.join(outputs_path,'u_buildings.shp'))
 u_builds = u_builds.explode()
 u_builds.reset_index(inplace=True, drop=True)
-e_builds = gdp.read_file(os.path.join(outputs_path,'e_buildings.shp'))
+e_builds = gpd.read_file(os.path.join(outputs_path,'e_buildings.shp'))
 e_builds = u_builds.explode()
 e_builds.reset_index(inplace=True, drop=True)
-u_green = gdp.read_file(os.path.join(outputs_path,'u_greenarea.shp'))
+u_green = gpd.read_file(os.path.join(outputs_path,'u_greenarea.shp'))
 u_green = u_builds.explode()
 u_green.reset_index(inplace=True, drop=True)
-e_green = gdp.read_file(os.path.join(outputs_path,'e_greenarea.shp'))
+e_green = gpd.read_file(os.path.join(outputs_path,'e_greenarea.shp'))
 e_green = u_builds.explode()
 e_green.reset_index(inplace=True, drop=True)
 
@@ -133,3 +126,11 @@ all_green = joined_green.to_file(os.path.join(outputs_path,'all_greenareas.shp')
 # Merge the new UDM buildings with the existing buildings
 joined_build = u_builds.append(e_builds)
 all_builds = joined_build.to_file(os.path.join(outputs_path,'all_buildings.shp'))
+
+# Delete shape files that are no longer needed
+os.remove(os.path.join(outputs_path,'u_buildings.shp'))
+os.remove(os.path.join(outputs_path,'e_buildings.shp'))
+os.remove(os.path.join(outputs_path,'u_greenarea.shp'))
+os.remove(os.path.join(outputs_path,'e_greenarea.shp'))
+os.remove(os.path.join(outputs_path,'clipped_greenspace.gpkg'))
+os.remove(os.path.join(outputs_path,'dph_poly.gpkg'))
