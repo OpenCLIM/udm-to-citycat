@@ -24,6 +24,18 @@ spec:
         default: Urban Fabric Output
         required: true
         
+      - name: save_logfile
+        title: save logfile
+        type: string
+        description: Save logfile
+        default: 'False'
+        required: false
+        options:
+          - name: 'False'
+            title: False
+          - name: 'True'
+            title: True
+        
     dataslots:
       - name: Existing Buildings
         description:
@@ -58,8 +70,13 @@ spec:
         path: inputs/
         required: false 
         
+        
   outputs:
     datasets:
       - name: outputs/data/
         type: folder
         description: path to model outputs
+        
+      - name: outputs/*.log
+        type: Text
+        description: log file
