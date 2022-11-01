@@ -50,7 +50,7 @@ spec:
           Existing greenspaces must be provided in a GPKG format as a single file. 
         default:
           - 41a7f3d3-0cbf-44cb-89fc-de9ec63f0b37
-        path: inputs/buildings/
+        path: inputs/green_areas/
         required: true
 
       - name: Urban Development Raster
