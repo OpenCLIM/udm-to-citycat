@@ -8,6 +8,7 @@ import rasterio
 from rasterio import features
 from shapely.validation import make_valid
 from shapely.validation import explain_validity
+from os import listdir, getenv, mkdir, remove, walk
 
 import random
 import string
