@@ -36,6 +36,19 @@ logger.info('--------')
 
 logger.info('Paths have been setup')  
 
+# get save_logfile status
+save_logfile = getenv('save_logfile') # get the type of data to be clipped. raster or vector
+if save_logfile is None: # grab the default if the var hasn't been passed
+    print('Warning! No save_logfile env passed. Default, False, will be used.')
+    save_logfile = False
+elif save_logfile.lower() == 'true':
+    save_logfile = True
+elif save_logfile.lower() == 'false':
+    save_logfile = False
+else:
+    print('Error! Incorrect setting for save logfile parameter (%s)' %save_logfile)
+    logger.info('Error! Incorrect setting for save logfile parameter (%s)' % save_logfile)
+
 buildings = glob(inputs_path + "/buildings/*.*", recursive = True)
 logger.info(buildings)
 e_builds = gpd.read_file(buildings[0])
