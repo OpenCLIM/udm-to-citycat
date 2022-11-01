@@ -162,3 +162,8 @@ os.remove(os.path.join(outputs_path,'u_greenarea.shp'))
 os.remove(os.path.join(outputs_path,'e_greenarea.shp'))
 os.remove(os.path.join(outputs_path,'clipped_greenspace.gpkg'))
 os.remove(os.path.join(outputs_path,'dph_poly.gpkg'))
+
+# final step - delete the log file if requested by user
+if save_logfile is False:
+    # delete log file dir
+    remove(join(data_path, output_dir, log_file_name))
