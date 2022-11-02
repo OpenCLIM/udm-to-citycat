@@ -168,14 +168,14 @@ logger.info('Merging Buildings')
 joined_build = u_builds.append(e_builds)
 all_builds = joined_build.to_file(os.path.join(outputs_path,'all_buildings.shp'))
 
-# Delete shape files that are no longer needed
-logger.info('Deleting files that are no longer needed')
-os.remove(os.path.join(outputs_path,'u_buildings.shp'))
-os.remove(os.path.join(outputs_path,'e_buildings.shp'))
-os.remove(os.path.join(outputs_path,'u_greenarea.shp'))
-os.remove(os.path.join(outputs_path,'e_greenarea.shp'))
-os.remove(os.path.join(outputs_path,'clipped_greenspace.gpkg'))
-os.remove(os.path.join(outputs_path,'dph_poly.gpkg'))
+# # Delete shape files that are no longer needed
+# logger.info('Deleting files that are no longer needed')
+# os.remove(os.path.join(outputs_path,'u_buildings.shp'))
+# os.remove(os.path.join(outputs_path,'e_buildings.shp'))
+# os.remove(os.path.join(outputs_path,'u_greenarea.shp'))
+# os.remove(os.path.join(outputs_path,'e_greenarea.shp'))
+# os.remove(os.path.join(outputs_path,'clipped_greenspace.gpkg'))
+# os.remove(os.path.join(outputs_path,'dph_poly.gpkg'))
 
 # final step - delete the log file if requested by user
 if save_logfile is False:
