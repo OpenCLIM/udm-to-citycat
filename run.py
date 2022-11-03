@@ -180,4 +180,4 @@ all_builds = joined_build.to_file(os.path.join(outputs_path,'all_buildings.shp')
 # final step - delete the log file if requested by user
 if save_logfile is False:
     # delete log file dir
-    remove(join(data_path, outputs_path, log_file_name))
+    remove(os.path.join(data_path, outputs_path, log_file_name))
