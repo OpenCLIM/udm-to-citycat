@@ -103,6 +103,8 @@ if stop_code == 0 :
     dph_raster = os.path.join(inputs_path,'out_cell_dph_clip.asc')
     buildings = glob(inputs_path + "/buildings/*.*", recursive = True)
     u_builds = gpd.read_file(os.path.join(inputs_path,'buildings','buildings_udm.gpkg'))
+    u_builds['building_use'] = 'residential'
+    u_builds['toid'] = 'udm' + u_builds.index.astype(str)
     u_green = gpd.read_file(os.path.join(inputs_path,'green_areas','greenspace_udm.gpkg'))
     logger.info('Files read in')
 
@@ -182,6 +184,11 @@ if stop_code == 0 :
     logger.info('Merging Buildings')
     joined_build = u_builds.append(e_builds)
     all_builds = joined_build.to_file(os.path.join(outputs_path,'all_buildings.shp'))
+    
+    # Creating a gpkg file in a building folder within the outputs path to read into the flood impact model
+    outputs_buildings_path=os.path.join(outputs_path,'buildings')
+    if not os.path.exists(outputs_buildings_path):
+        os.mkdir(outputs_buildings_path)
 
     # # Delete shape files that are no longer needed
     # logger.info('Deleting files that are no longer needed')
