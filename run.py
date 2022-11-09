@@ -87,7 +87,11 @@ if len(matches) ==1 :
         
 if len(matches) ==0 :
     all_builds = e_builds.to_file(os.path.join(outputs_path,'all_buildings.shp'))
+    all_builds = all_builds.explode()
+    all_builds.reset_index(inplace=True, drop=True)
     all_greens = e_green.to_file(os.path.join(outputs_path,'all_greenareas.shp'))
+    all_greens = all_greens.explode()
+    all_greens.reset_index(inplace=True, drop=True)
     stop_code = 1
 
 if stop_code == 0 :
