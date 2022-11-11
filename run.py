@@ -206,14 +206,35 @@ if stop_code == 0 :
     if not os.path.exists(outputs_buildings_path):
         os.mkdir(outputs_buildings_path)
 
-    # # Delete shape files that are no longer needed
-    # logger.info('Deleting files that are no longer needed')
-    # os.remove(os.path.join(outputs_path,'u_buildings.shp'))
-    # os.remove(os.path.join(outputs_path,'e_buildings.shp'))
-    # os.remove(os.path.join(outputs_path,'u_greenarea.shp'))
-    # os.remove(os.path.join(outputs_path,'e_greenarea.shp'))
-    # os.remove(os.path.join(outputs_path,'clipped_greenspace.gpkg'))
-    # os.remove(os.path.join(outputs_path,'dph_poly.gpkg'))
+    # Delete shape files that are no longer needed
+    logger.info('Deleting files that are no longer needed')
+
+    os.remove(os.path.join(outputs_path,'u_buildings.shp'))
+    os.remove(os.path.join(outputs_path,'u_buildings.cpg'))
+    os.remove(os.path.join(outputs_path,'u_buildings.dbf'))
+    os.remove(os.path.join(outputs_path,'u_buildings.prj'))
+    os.remove(os.path.join(outputs_path,'u_buildings.shx'))
+
+    os.remove(os.path.join(outputs_path,'e_buildings.shp'))
+    os.remove(os.path.join(outputs_path,'e_buildings.cpg'))
+    os.remove(os.path.join(outputs_path,'e_buildings.dbf'))
+    os.remove(os.path.join(outputs_path,'e_buildings.prj'))
+    os.remove(os.path.join(outputs_path,'e_buildings.shx'))
+
+    os.remove(os.path.join(outputs_path,'u_greenarea.shp'))
+    os.remove(os.path.join(outputs_path,'u_greenarea.cpg'))
+    os.remove(os.path.join(outputs_path,'u_greenarea.dbf'))
+    os.remove(os.path.join(outputs_path,'u_greenarea.prj'))
+    os.remove(os.path.join(outputs_path,'u_greenarea.shx'))
+
+    os.remove(os.path.join(outputs_path,'e_greenarea.shp'))
+    os.remove(os.path.join(outputs_path,'e_greenarea.cpg'))
+    os.remove(os.path.join(outputs_path,'e_greenarea.dbf'))
+    os.remove(os.path.join(outputs_path,'e_greenarea.prj'))
+    os.remove(os.path.join(outputs_path,'e_greenarea.shx'))
+
+    os.remove(os.path.join(outputs_path,'clipped_greenspace.gpkg'))
+    os.remove(os.path.join(outputs_path,'dph_poly.gpkg'))
     
     # Merge the udm buildings and existing buildings shapefiles (with the toid and building use added to the udm buildings)
     all_buildings = udm_buildings.append(existing_builds)
