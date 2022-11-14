@@ -97,7 +97,7 @@ if len(matches) ==0 :
     all_builds.reset_index(inplace=True, drop=True)
     all_builds1 = all_builds.to_file(os.path.join(outputs_path,'all_buildings.shp'))
     
-    Create a shapefile of the existing greenspaces to be turned into a text file for citycat
+    #Create a shapefile of the existing greenspaces to be turned into a text file for citycat
     all_greens = e_green.to_file(os.path.join(outputs_path,'all_greenareas.shp'))
     all_greens = gpd.read_file(os.path.join(outputs_path,'all_greenareas.shp'))
     all_greens = all_greens.explode()
@@ -200,11 +200,6 @@ if stop_code == 0 :
     logger.info('Merging Buildings')
     joined_build = u_builds.append(e_builds)
     all_builds = joined_build.to_file(os.path.join(outputs_path,'all_buildings.shp'))
-    
-    # Creating a gpkg file in a building folder within the outputs path to read into the flood impact model
-    outputs_buildings_path=os.path.join(outputs_path,'buildings')
-    if not os.path.exists(outputs_buildings_path):
-        os.mkdir(outputs_buildings_path)
 
     # Delete shape files that are no longer needed
     logger.info('Deleting files that are no longer needed')
