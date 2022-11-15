@@ -227,8 +227,7 @@ if stop_code == 0 :
     os.remove(os.path.join(outputs_path,'e_greenarea.dbf'))
     os.remove(os.path.join(outputs_path,'e_greenarea.prj'))
     os.remove(os.path.join(outputs_path,'e_greenarea.shx'))
-
-    os.remove(os.path.join(outputs_path,'clipped_greenspace.gpkg'))
+    
     os.remove(os.path.join(outputs_path,'dph_poly.gpkg'))
     
     # Merge the udm buildings and existing buildings shapefiles (with the toid and building use added to the udm buildings)
