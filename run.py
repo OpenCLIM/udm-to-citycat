@@ -166,7 +166,7 @@ if stop_code == 0 :
     # Look at the difference between the developed land and exisiting green spaces and output to file
     logger.info('Calculating difference between green spaces and development land')
     res_difference = gpd.overlay(e_green,shp, how='difference')
-    res_difference.to_file(os.path.join(outputs_path,'clipped_greenspace.gpkg'),driver='GPKG')
+    #res_difference.to_file(os.path.join(outputs_path,'clipped_greenspace.gpkg'),driver='GPKG')
 
     # Need to make all sets of building and greenery shapefiles before merging them to avoid losing data
     logger.info('Creating Shapefiles')
