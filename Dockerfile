@@ -1,4 +1,5 @@
 FROM continuumio/miniconda3:4.8.2
+ENV PYTHONUNBUFFERED 1
 
 RUN mkdir src
 
