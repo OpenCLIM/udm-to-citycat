@@ -85,8 +85,8 @@ if len(matches) ==1 :
         if not os.path.exists(inputs_greenspaces_path):
             os.mkdir(inputs_greenspaces_path)
         # Move the relevent files into the correct folders
-        shutil.move(os.path.join(inputs_path,'src','buildings.gpkg'), os.path.join(inputs_buildings_path,'buildings_udm.gpkg'))
-        shutil.move(os.path.join(inputs_path,'src','greenspace.gpkg'), os.path.join(inputs_greenspaces_path,'greenspace_udm.gpkg'))
+        shutil.move(os.path.join(inputs_path,'data','outputs','data','buildings.gpkg'), os.path.join(inputs_buildings_path,'buildings_udm.gpkg'))
+        shutil.move(os.path.join(inputs_path,'data','outputs','data','greenspace.gpkg'), os.path.join(inputs_greenspaces_path,'greenspace_udm.gpkg'))
         zip.close()
         
 if len(matches) ==0 :
