@@ -26,6 +26,9 @@ if not os.path.exists(outputs_path):
 outputs_buildings_path=os.path.join(outputs_path,'buildings')
 if not os.path.exists(outputs_buildings_path):
     os.mkdir(outputs_buildings_path)
+outputs_greenareas_path=os.path.join(outputs_path,'green_areas')
+if not os.path.exists(outputs_greenareas_path):
+    os.mkdir(outputs_greenareas_path)
     
 # Set up log file
 logger = logging.getLogger('udm-to-citycat-dafni')
@@ -194,12 +197,12 @@ if stop_code == 0 :
     # (removing areas that have been developed)
     logger.info('Merging Greenspaces')
     joined_green = u_green.append(e_green)
-    all_green = joined_green.to_file(os.path.join(outputs_path,'all_greenareas.shp'))
+    all_green = joined_green.to_file(os.path.join(outputs_green_areas_path,'all_greenareas.shp'))
 
     # Merge the new UDM buildings with the existing buildings
     logger.info('Merging Buildings')
     joined_build = u_builds.append(e_builds)
-    all_builds = joined_build.to_file(os.path.join(outputs_path,'all_buildings.shp'))
+    all_builds = joined_build.to_file(os.path.join(outputs_buildings_path,'all_buildings.shp'))
 
     # Delete shape files that are no longer needed
     logger.info('Deleting files that are no longer needed')
