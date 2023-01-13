@@ -197,7 +197,7 @@ if stop_code == 0 :
     # (removing areas that have been developed)
     logger.info('Merging Greenspaces')
     joined_green = u_green.append(e_green)
-    all_green = joined_green.to_file(os.path.join(outputs_green_areas_path,'all_greenareas.shp'))
+    all_green = joined_green.to_file(os.path.join(outputs_greenareas_path,'all_greenareas.shp'))
 
     # Merge the new UDM buildings with the existing buildings
     logger.info('Merging Buildings')
