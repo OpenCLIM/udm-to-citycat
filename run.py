@@ -237,11 +237,11 @@ if stop_code == 0 :
     all_buildings = udm_buildings.append(existing_builds)
 
     # Need to change the fid column from real to integer (renamed and replaced)
-    all_buildings.rename(columns={"fid":"Check"}, inplace=True)
-    all_buildings['fid'] = np.arange(all_buildings.shape[0])
+    #all_buildings.rename(columns={"fid":"Check"}, inplace=True)
+    #all_buildings['fid'] = np.arange(all_buildings.shape[0])
     
     # Output a gpkg file with all of the buildings to a seperate folder
-    all_buildings.to_file(os.path.join(outputs_buildings_path,'all_buildings.gpkg'),driver='GPKG')
+    #all_buildings.to_file(os.path.join(outputs_buildings_path,'all_buildings.gpkg'),driver='GPKG')
 
     # final step - delete the log file if requested by user
     if save_logfile is False:
