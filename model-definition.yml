@@ -43,7 +43,7 @@ spec:
         default:
           - 279af83d-3690-4dee-9004-7d100be6ccc6
         path: inputs/buildings/
-        required: true
+        required: false
 
       - name: Existing Greenspaces
         description:
@@ -51,7 +51,7 @@ spec:
         default:
           - 41a7f3d3-0cbf-44cb-89fc-de9ec63f0b37
         path: inputs/green_areas/
-        required: true
+        required: false
 
       - name: Urban Development Raster
         description:
