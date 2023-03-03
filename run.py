@@ -20,6 +20,7 @@ from os.path import isfile, join, isdir
 # Set up paths
 data_path = os.getenv('DATA_PATH', '/data')
 inputs_path = os.path.join(data_path, 'inputs')
+parameters_path = os.path.join(inputs_path,'parameters')
 outputs_path = os.path.join(data_path, 'outputs')
 if not os.path.exists(outputs_path):
     os.mkdir(outputs_path)
@@ -29,6 +30,9 @@ if not os.path.exists(outputs_buildings_path):
 outputs_greenareas_path=os.path.join(outputs_path,'green_areas')
 if not os.path.exists(outputs_greenareas_path):
     os.mkdir(outputs_greenareas_path)
+outputs_parameters_data = os.path.join(data_path, 'outputs', 'parameters')
+if not os.path.exists(outputs_parameters_data):
+    os.mkdir(outputs_parameters_data)
     
 # Set up log file
 logger = logging.getLogger('udm-to-citycat-dafni')
@@ -249,3 +253,20 @@ if stop_code == 0 :
     if save_logfile is False:
         # delete log file dir
         remove(os.path.join(data_path, outputs_path, log_file_name))
+        
+# Identify if a parameter file has been added
+parameter_file = glob(parameters_path + "/*.csv", recursive = True)
+print('parameter_file:', parameter_file)
+
+# If one has, move the file to the outputs path
+if len(parameter_file) == 1 :
+    file_path = os.path.splitext(parameter_file[0])
+    print('Filepath:',file_path)
+    filename=file_path[0].split("/")
+    print('Filename:',filename[-1])
+    
+    src = parameter_file[0]
+    print('src:',src)
+    dst = os.path.join(outputs_parameters_data,filename[-1] + '.csv')
+    print('dst,dst')
+    shutil.copy(src,dst)
