@@ -78,7 +78,16 @@ for match in archive:
     if "urban_fabric" in match:
         matches.append(match)
 
-if len(matches) ==1 :
+print('Matches:', matches)
+
+check = []
+
+if len(matches) == 1:
+    with ZipFile(matches[0],'r') as zip:
+        check = zip.namelist()
+        print('Check:',check)
+
+if len(check) != 0 :
     stop_code = 0
     if os.path.exists(matches[0]) :
         with ZipFile(matches[0], 'r') as zip: 
@@ -98,7 +107,7 @@ if len(matches) ==1 :
         shutil.move(os.path.join(inputs_path,'greenspace.gpkg'), os.path.join(inputs_greenspaces_path,'greenspace_udm.gpkg'))
         zip.close()
         
-if len(matches) ==0 :
+if len(matches) == 0 or len(check) == 0:
     # Create a shapefile of the existing buildings to be turned into a text file for citycat
     all_builds = e_builds.to_file(os.path.join(outputs_path,'all_buildings.shp'))
     all_builds = gpd.read_file(os.path.join(outputs_path,'all_buildings.shp'))
@@ -116,8 +125,7 @@ if len(matches) ==0 :
     # Create a copy of the buildings.gpkg in the outputs path to input into the flood impact model
     src=buildings[0]
     dst=os.path.join(outputs_buildings_path,'all_buildings.gpkg')
-    shutil.copy(src,dst)
-    
+    shutil.copy(src,dst)  
     stop_code = 1
 
 if stop_code == 0 :
