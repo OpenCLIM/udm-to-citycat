@@ -33,6 +33,9 @@ if not os.path.exists(outputs_greenareas_path):
 outputs_parameters_data = os.path.join(data_path, 'outputs', 'parameters')
 if not os.path.exists(outputs_parameters_data):
     os.mkdir(outputs_parameters_data)
+ia_path = os.path.join(outputs_path,'flood_impact')
+if not os.path.exists(ia_path):
+    os.mkdir(ia_path)
     
 # Set up log file
 logger = logging.getLogger('udm-to-citycat-dafni')
@@ -63,6 +66,8 @@ else:
 
 buildings = glob(inputs_path + "/buildings/*.*", recursive = True)
 logger.info(buildings)
+shutil.copy(buildings[0], os.path.join(ia_path,'buildings_exist.gpkg'))
+
 e_builds = gpd.read_file(buildings[0])
 greens = glob(inputs_path + "/green_areas/*.*", recursive = True)
 logger.info(greens)
@@ -114,6 +119,7 @@ if len(check) != 0 :
         # Move the relevent files into the correct folders
         #shutil.move(os.path.join(inputs_path,'data','outputs','data','buildings.gpkg'), os.path.join(inputs_buildings_path,'buildings_udm.gpkg'))
         #shutil.move(os.path.join(inputs_path,'data','outputs','data','greenspace.gpkg'), os.path.join(inputs_greenspaces_path,'greenspace_udm.gpkg'))
+        shutil.copy(os.path.join(udm_path,'buildings.gpkg'), os.path.join(ia_path,'buildings_udm.gpkg'))
         shutil.move(os.path.join(udm_path,'buildings.gpkg'), os.path.join(inputs_buildings_path,'buildings_udm.gpkg'))
         shutil.move(os.path.join(udm_path,'greenspace.gpkg'), os.path.join(inputs_greenspaces_path,'greenspace_udm.gpkg'))
         zip.close()
@@ -148,10 +154,10 @@ if len(matches) == 0 or len(check) == 0:
     os.remove(os.path.join(outputs_path,'all_greenareas.prj'))
     os.remove(os.path.join(outputs_path,'all_greenareas.shx'))
     
-    # Create a copy of the buildings.gpkg in the outputs path to input into the flood impact model
-    # src=buildings[0]
-    # dst=os.path.join(outputs_buildings_path,'all_buildings.gpkg')
-    # shutil.copy(src,dst)  
+    #Create a copy of the buildings.gpkg in the outputs path to input into the flood impact model
+    src=buildings[0]
+    dst=os.path.join(ia_path,'all_buildings.gpkg')
+    shutil.copy(src,dst)  
     stop_code = 1
 
 if stop_code == 0 :
@@ -274,14 +280,14 @@ if stop_code == 0 :
     os.remove(os.path.join(outputs_path,'dph_poly.gpkg'))
     
     # Merge the udm buildings and existing buildings shapefiles (with the toid and building use added to the udm buildings)
-    #all_buildings = udm_buildings.append(existing_builds)
+    # all_buildings = udm_buildings.append(existing_builds)
 
     # Need to change the fid column from real to integer (renamed and replaced)
-    #all_buildings.rename(columns={"fid":"Check"}, inplace=True)
-    #all_buildings['fid'] = np.arange(all_buildings.shape[0])
+    # all_buildings.rename(columns={"fid":"Check"}, inplace=True)
+    # all_buildings['fid'] = np.arange(all_buildings.shape[0])
     
     # Output a gpkg file with all of the buildings to a seperate folder
-    #all_buildings.to_file(os.path.join(outputs_buildings_path,'all_buildings.gpkg'),driver='GPKG')
+    # all_buildings.to_file(os.path.join(outputs_buildings_path,'all_buildings.gpkg'),driver='GPKG')
 
     # final step - delete the log file if requested by user
     if save_logfile is False:
