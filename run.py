@@ -89,6 +89,17 @@ if len(matches) == 1:
 
 if len(check) != 0 :
     stop_code = 0
+    # Identify the name of the folder containing the zipped UDM documents  
+    udm_data = glob(inputs_path + "/*.zip", recursive = True)
+    file_path = os.path.splitext(udm_data[0])
+    print('Filepath:',file_path)
+    filename=file_path[0].split("/")
+    print('Filename:',filename[-1])
+
+    # Create a filepath to that folder
+    udm_path = os.path.join(inputs_path, filename[-1])
+    print('udm_path:',udm_path)
+
     if os.path.exists(matches[0]) :
         with ZipFile(matches[0], 'r') as zip: 
             # extract the files into the inputs directory
@@ -103,8 +114,8 @@ if len(check) != 0 :
         # Move the relevent files into the correct folders
         #shutil.move(os.path.join(inputs_path,'data','outputs','data','buildings.gpkg'), os.path.join(inputs_buildings_path,'buildings_udm.gpkg'))
         #shutil.move(os.path.join(inputs_path,'data','outputs','data','greenspace.gpkg'), os.path.join(inputs_greenspaces_path,'greenspace_udm.gpkg'))
-        shutil.move(os.path.join(inputs_path,'buildings.gpkg'), os.path.join(inputs_buildings_path,'buildings_udm.gpkg'))
-        shutil.move(os.path.join(inputs_path,'greenspace.gpkg'), os.path.join(inputs_greenspaces_path,'greenspace_udm.gpkg'))
+        shutil.move(os.path.join(udm_path,'buildings.gpkg'), os.path.join(inputs_buildings_path,'buildings_udm.gpkg'))
+        shutil.move(os.path.join(udm_path,'greenspace.gpkg'), os.path.join(inputs_greenspaces_path,'greenspace_udm.gpkg'))
         zip.close()
         
 if len(matches) == 0 or len(check) == 0:
@@ -113,19 +124,34 @@ if len(matches) == 0 or len(check) == 0:
     all_builds = gpd.read_file(os.path.join(outputs_path,'all_buildings.shp'))
     all_builds = all_builds.explode()
     all_builds.reset_index(inplace=True, drop=True)
-    all_builds1 = all_builds.to_file(os.path.join(outputs_path,'all_buildings.shp'))
+    all_builds1 = all_builds.to_file(os.path.join(outputs_buildings_path,'all_buildings.shp'))
     
     #Create a shapefile of the existing greenspaces to be turned into a text file for citycat
     all_greens = e_green.to_file(os.path.join(outputs_path,'all_greenareas.shp'))
     all_greens = gpd.read_file(os.path.join(outputs_path,'all_greenareas.shp'))
     all_greens = all_greens.explode()
     all_greens.reset_index(inplace=True, drop=True)
-    all_greens1 = all_greens.to_file(os.path.join(outputs_path,'all_greenareas.shp'))
+    all_greens1 = all_greens.to_file(os.path.join(outputs_greenareas_path,'all_greenareas.shp'))
+
+    # Delete shape files that are no longer needed
+    logger.info('Deleting files that are no longer needed')
+
+    os.remove(os.path.join(outputs_path,'all_buildings.shp'))
+    os.remove(os.path.join(outputs_path,'all_buildings.cpg'))
+    os.remove(os.path.join(outputs_path,'all_buildings.dbf'))
+    os.remove(os.path.join(outputs_path,'all_buildings.prj'))
+    os.remove(os.path.join(outputs_path,'all_buildings.shx'))
+
+    os.remove(os.path.join(outputs_path,'all_greenareas.shp'))
+    os.remove(os.path.join(outputs_path,'all_greenareas.cpg'))
+    os.remove(os.path.join(outputs_path,'all_greenareas.dbf'))
+    os.remove(os.path.join(outputs_path,'all_greenareas.prj'))
+    os.remove(os.path.join(outputs_path,'all_greenareas.shx'))
     
     # Create a copy of the buildings.gpkg in the outputs path to input into the flood impact model
-    src=buildings[0]
-    dst=os.path.join(outputs_buildings_path,'all_buildings.gpkg')
-    shutil.copy(src,dst)  
+    # src=buildings[0]
+    # dst=os.path.join(outputs_buildings_path,'all_buildings.gpkg')
+    # shutil.copy(src,dst)  
     stop_code = 1
 
 if stop_code == 0 :
@@ -248,7 +274,7 @@ if stop_code == 0 :
     os.remove(os.path.join(outputs_path,'dph_poly.gpkg'))
     
     # Merge the udm buildings and existing buildings shapefiles (with the toid and building use added to the udm buildings)
-    all_buildings = udm_buildings.append(existing_builds)
+    #all_buildings = udm_buildings.append(existing_builds)
 
     # Need to change the fid column from real to integer (renamed and replaced)
     #all_buildings.rename(columns={"fid":"Check"}, inplace=True)
