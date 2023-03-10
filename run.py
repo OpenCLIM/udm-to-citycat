@@ -94,17 +94,6 @@ if len(matches) == 1:
 
 if len(check) != 0 :
     stop_code = 0
-    # Identify the name of the folder containing the zipped UDM documents  
-    udm_data = glob(inputs_path + "/*.zip", recursive = True)
-    file_path = os.path.splitext(udm_data[0])
-    print('Filepath:',file_path)
-    filename=file_path[0].split("/")
-    print('Filename:',filename[-1])
-
-    # Create a filepath to that folder
-    udm_path = os.path.join(inputs_path, filename[-1])
-    print('udm_path:',udm_path)
-
     if os.path.exists(matches[0]) :
         with ZipFile(matches[0], 'r') as zip: 
             # extract the files into the inputs directory
@@ -119,9 +108,9 @@ if len(check) != 0 :
         # Move the relevent files into the correct folders
         #shutil.move(os.path.join(inputs_path,'data','outputs','data','buildings.gpkg'), os.path.join(inputs_buildings_path,'buildings_udm.gpkg'))
         #shutil.move(os.path.join(inputs_path,'data','outputs','data','greenspace.gpkg'), os.path.join(inputs_greenspaces_path,'greenspace_udm.gpkg'))
-        shutil.copy(os.path.join(udm_path,'buildings.gpkg'), os.path.join(ia_path,'buildings_udm.gpkg'))
-        shutil.move(os.path.join(udm_path,'buildings.gpkg'), os.path.join(inputs_buildings_path,'buildings_udm.gpkg'))
-        shutil.move(os.path.join(udm_path,'greenspace.gpkg'), os.path.join(inputs_greenspaces_path,'greenspace_udm.gpkg'))
+        shutil.copy(os.path.join(inputs_path,'buildings.gpkg'), os.path.join(ia_path,'buildings_udm.gpkg'))
+        shutil.move(os.path.join(inputs_path,'buildings.gpkg'), os.path.join(inputs_buildings_path,'buildings_udm.gpkg'))
+        shutil.move(os.path.join(inputs_path,'greenspace.gpkg'), os.path.join(inputs_greenspaces_path,'greenspace_udm.gpkg'))
         zip.close()
         
 if len(matches) == 0 or len(check) == 0:
@@ -153,6 +142,7 @@ if len(matches) == 0 or len(check) == 0:
     os.remove(os.path.join(outputs_path,'all_greenareas.dbf'))
     os.remove(os.path.join(outputs_path,'all_greenareas.prj'))
     os.remove(os.path.join(outputs_path,'all_greenareas.shx'))
+    
 
 if stop_code == 0 :
     # Read in all of the relevent files from the inputs folder, including the outputs from the udm
