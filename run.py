@@ -143,6 +143,7 @@ if len(matches) == 0 or len(check) == 0:
     os.remove(os.path.join(outputs_path,'all_greenareas.prj'))
     os.remove(os.path.join(outputs_path,'all_greenareas.shx'))
     
+    stop_code = 1
 
 if stop_code == 0 :
     # Read in all of the relevent files from the inputs folder, including the outputs from the udm
