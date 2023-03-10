@@ -153,12 +153,6 @@ if len(matches) == 0 or len(check) == 0:
     os.remove(os.path.join(outputs_path,'all_greenareas.dbf'))
     os.remove(os.path.join(outputs_path,'all_greenareas.prj'))
     os.remove(os.path.join(outputs_path,'all_greenareas.shx'))
-    
-    #Create a copy of the buildings.gpkg in the outputs path to input into the flood impact model
-    src=buildings[0]
-    dst=os.path.join(ia_path,'all_buildings.gpkg')
-    shutil.copy(src,dst)  
-    stop_code = 1
 
 if stop_code == 0 :
     # Read in all of the relevent files from the inputs folder, including the outputs from the udm
