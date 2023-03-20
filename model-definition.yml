@@ -16,14 +16,7 @@ metadata:
 
 spec:
   inputs:
-    parameters:
-      - name: TITLE
-        title: Title
-        type: string
-        description: The title given to the output dataset
-        default: Urban Fabric Output
-        required: true
-        
+    parameters:        
       - name: save_logfile
         title: save logfile
         type: string
