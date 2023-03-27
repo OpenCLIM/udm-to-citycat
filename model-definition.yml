@@ -1,7 +1,7 @@
 kind: M
 api_version: v1beta2
 metadata:
-  display_name: UDM to City Cat (Data Preperation)
+  display_name: Urban_Flooding:UDM to City Cat
   name: udmcc
   publisher: Newcastle University
   summary: >
@@ -33,16 +33,12 @@ spec:
       - name: Existing Buildings
         description:
           Existing buildings must be provided in a GPKG format as a single file. 
-        default:
-          - 279af83d-3690-4dee-9004-7d100be6ccc6
         path: inputs/buildings/
         required: false
 
       - name: Existing Greenspaces
         description:
           Existing greenspaces must be provided in a GPKG format as a single file. 
-        default:
-          - 41a7f3d3-0cbf-44cb-89fc-de9ec63f0b37
         path: inputs/green_areas/
         required: false
 
@@ -50,26 +46,35 @@ spec:
         description:
           Planned urban development must be provided in ASCII raster format, within a single file or as multiple tiles. Should be
           taken from the UDM output file *_cell_dph.asc
-        default:
-          - e797e66e-f143-4b29-8efd-17158881a566
         path: inputs/
         required: false 
         
       - name: Urban Fabric 
         description:
           Geopackages created by the urban fabric generator model and stored in a zip file due to file size.
-        default: 
-          - 252e0f2b-55b1-4f8f-964b-63c4e0a7b98f
         path: inputs/
         required: false 
         
         
   outputs:
     datasets:
-      - name: outputs/data/
+      - name: outputs/buildings/*
         type: folder
-        description: path to model outputs
+        description:
+          All baseline buildings and new developments merged into one shapefile.
+          
+      - name: outputs/green_areas/*
+        type: folder
+        description:
+          All baseline green_areas and gardens attached to new developments merged into one shapefile.
         
-      - name: outputs/*.log
-        type: Text
-        description: log file
+      - name: outputs/flood_impacts/*
+        type: folder
+        description:
+          A gpgk of the baseline building infrastructure. 
+          If outputs are produced, a second gpkg of the new building developments.
+        
+      - name: outputs/parameters/*
+        type: folder
+        description:
+          All parameters and their values are stored in a csv file.
