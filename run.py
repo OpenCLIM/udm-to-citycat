@@ -20,22 +20,33 @@ from os.path import isfile, join, isdir
 # Set up paths
 data_path = os.getenv('DATA_PATH', '/data')
 inputs_path = os.path.join(data_path, 'inputs')
+
 parameters_path = os.path.join(inputs_path,'parameters')
+udm_para_in_path = os.path.join(inputs_path, 'udm_parameters')
+
 outputs_path = os.path.join(data_path, 'outputs')
 if not os.path.exists(outputs_path):
     os.mkdir(outputs_path)
+    
 outputs_buildings_path=os.path.join(outputs_path,'buildings')
 if not os.path.exists(outputs_buildings_path):
     os.mkdir(outputs_buildings_path)
+    
 outputs_greenareas_path=os.path.join(outputs_path,'green_areas')
 if not os.path.exists(outputs_greenareas_path):
     os.mkdir(outputs_greenareas_path)
+    
 outputs_parameters_data = os.path.join(data_path, 'outputs', 'parameters')
 if not os.path.exists(outputs_parameters_data):
     os.mkdir(outputs_parameters_data)
+    
 ia_path = os.path.join(outputs_path,'flood_impact')
 if not os.path.exists(ia_path):
     os.mkdir(ia_path)
+    
+udm_para_out_path = os.path.join(outputs_path, 'udm_parameters')
+if not os.path.exists(udm_para_out_path):
+    os.mkdir(udm_para_out_path)
     
 # Set up log file
 logger = logging.getLogger('udm-to-citycat-dafni')
@@ -294,4 +305,30 @@ if len(parameter_file) == 1 :
     print('src:',src)
     dst = os.path.join(outputs_parameters_data,filename[-1] + '.csv')
     print('dst,dst')
+    shutil.copy(src,dst)
+
+# Find UDM Metadata files and move them into the outputs folder
+meta_data_txt = glob(udm_para_in_path + "/**/metadata.txt", recursive = True)
+meta_data_csv = glob(udm_para_in_path + "/**/metadata.csv", recursive = True)
+attractors = glob(udm_para_in_path + "/**/attractors.csv", recursive = True)
+constraints = glob(udm_para_in_path + "/**/constraints.csv", recursive = True)
+
+if len(meta_data_txt)==1:
+    src = meta_data_txt[0]
+    dst = os.path.join(udm_para_out_path,'metadata.txt')
+    shutil.copy(src,dst)
+
+if len(meta_data_csv)==1:
+    src = meta_data_csv[0]
+    dst = os.path.join(udm_para_out_path,'metadata.csv')
+    shutil.copy(src,dst)
+
+if len(attractors)==1:
+    src = attractors[0]
+    dst = os.path.join(udm_para_out_path,'attractors.csv')
+    shutil.copy(src,dst)
+
+if len(constraints)==1:
+    src = constraints[0]
+    dst = os.path.join(udm_para_out_path,'constraints.csv')
     shutil.copy(src,dst)
